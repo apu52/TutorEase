@@ -7,8 +7,12 @@ export const registerTeacher = async (req: Request, res: Response): Promise<void
     const teacher = new Teacher(req.body as ITeacher);
     await teacher.save();
     res.status(201).json(teacher);
-  } catch (err: any) {
-    res.status(400).json({ error: err.message });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      res.status(400).json({ error: err.message });
+    } else {
+      res.status(400).json({ error: 'Unknown error occurred' });
+    }
   }
 };
 
@@ -21,7 +25,11 @@ export const getTeachersBySubjectAndLocation = async (req: Request, res: Respons
       location: location
     });
     res.json(teachers);
-  } catch (err: any) {
-    res.status(500).json({ error: err.message });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.status(500).json({ error: 'Unknown error occurred' });
+    }
   }
 };

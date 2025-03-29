@@ -7,6 +7,10 @@ export interface IStudent extends Document {
   location: string;
   interests: string;
   preferredLearningMode?: 'online' | 'offline';
+  priceRange?: {
+    min: number;
+    max: number;
+  };
 }
 
 const StudentSchema: Schema<IStudent> = new Schema({
@@ -15,7 +19,11 @@ const StudentSchema: Schema<IStudent> = new Schema({
   password: { type: String, required: true },
   location: { type: String, required: true },
   interests: { type: String, required: true },
-  preferredLearningMode: { type: String, enum: ['online', 'offline'] }
+  preferredLearningMode: { type: String, enum: ['online', 'offline'] },
+  priceRange: {
+    min: { type: Number },
+    max: { type: Number }
+  }
 });
 
 export default mongoose.model<IStudent>('Student', StudentSchema);
