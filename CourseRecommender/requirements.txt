@@ -1,0 +1,10 @@
+pandas
+numpy
+json5  # JSON is built-in, but some cases require json5
+requests
+python-dotenv
+rich
+tqdm
+openai
+gradio
+huggingface_hub
