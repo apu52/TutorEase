@@ -1,9 +1,10 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.ts",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "start": "nodemon server.ts"
   },
   "keywords": [],
   "author": "",
@@ -11,13 +12,15 @@
   "description": "",
   "dependencies": {
     "@types/express": "^5.0.1",
-    "@types/node": "^22.13.14",
     "axios": "^1.8.4",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "mongoose": "^8.13.1",
+    "mongoose": "^8.13.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.14",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   }

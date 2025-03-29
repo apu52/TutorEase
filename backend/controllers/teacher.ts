@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Teacher, { ITeacher } from '../model/teacher';
+import Teacher, { ITeacher } from '../model/teacherModel';
 
 // Register a new teacher
 export const registerTeacher = async (req: Request, res: Response): Promise<void> => {
