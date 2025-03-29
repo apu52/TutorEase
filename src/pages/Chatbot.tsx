@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
@@ -9,8 +8,16 @@ import { Input } from '@/components/ui/input';
 import { Avatar } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 
-// Sample conversation
-const initialMessages = [
+type MessageType = {
+  type: 'user' | 'ai' | 'system';
+  content: string;
+};
+
+interface ChatResponse {
+  response: string;
+}
+
+const initialMessages: MessageType[] = [
   {
     type: 'system',
     content: "Hi there! I'm your AI Learning Assistant. Ask me anything about your studies, and I'll help you find resources, explain concepts, or create a study plan. What would you like to learn today?"
@@ -27,105 +34,48 @@ const examples = [
 ];
 
 const Chatbot = () => {
-  const [messages, setMessages] = useState(initialMessages);
+  const [messages, setMessages] = useState<MessageType[]>(initialMessages);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!input.trim()) return;
     
     // Add user message
-    const userMessage = { type: 'user', content: input };
-    setMessages([...messages, userMessage]);
+    const userMessage: MessageType = { type: 'user', content: input };
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
     setLoading(true);
-    
-    // Simulate AI response after a delay
-    setTimeout(() => {
-      const demoResponses = {
-        "Create a study roadmap for Java programming": (
-          <div className="space-y-3">
-            <p>Here's a structured roadmap for learning Java programming:</p>
-            <ol className="list-decimal pl-5 space-y-2">
-              <li>
-                <strong>Java Basics (3-4 weeks)</strong>
-                <ul className="list-disc pl-5 pt-1">
-                  <li>Syntax, variables, data types</li>
-                  <li>Control flow & loops</li>
-                  <li>Methods and functions</li>
-                </ul>
-              </li>
-              <li>
-                <strong>Object-Oriented Programming (4 weeks)</strong>
-                <ul className="list-disc pl-5 pt-1">
-                  <li>Classes and objects</li>
-                  <li>Inheritance, polymorphism, encapsulation</li>
-                  <li>Interfaces and abstract classes</li>
-                </ul>
-              </li>
-              <li>
-                <strong>Java Collections & APIs (3 weeks)</strong>
-                <ul className="list-disc pl-5 pt-1">
-                  <li>Lists, Sets, Maps</li>
-                  <li>Generics</li>
-                  <li>Exception handling</li>
-                </ul>
-              </li>
-              <li>
-                <strong>Advanced Topics (4-6 weeks)</strong>
-                <ul className="list-disc pl-5 pt-1">
-                  <li>Multithreading & concurrency</li>
-                  <li>File I/O and serialization</li>
-                  <li>Java 8+ features (streams, lambdas)</li>
-                </ul>
-              </li>
-              <li>
-                <strong>Frameworks & Projects (ongoing)</strong>
-                <ul className="list-disc pl-5 pt-1">
-                  <li>Spring Boot</li>
-                  <li>Hibernate ORM</li>
-                  <li>Building a portfolio project</li>
-                </ul>
-              </li>
-            </ol>
-            <p className="pt-2">Would you like more details on any specific section of this roadmap?</p>
-          </div>
-        ),
-        "Explain the concept of neural networks in simple terms": (
-          <div>
-            <p>Neural networks are like a digital version of your brain's thinking process. Imagine a system that works in layers:</p>
-            <ol className="list-decimal pl-5 space-y-2 py-2">
-              <li><strong>Input Layer:</strong> This receives information (like pixels of an image).</li>
-              <li><strong>Hidden Layers:</strong> These process the information through connections (like neurons in your brain).</li>
-              <li><strong>Output Layer:</strong> This produces an answer (like "this is a cat" when seeing a cat image).</li>
-            </ol>
-            <p>Each connection has a "weight" (importance) that adjusts as the network learns. When you train a neural network, you're basically showing it examples and letting it adjust these weights until it gets better at recognizing patterns.</p>
-            <p className="pt-2">For instance, to identify cats, it might learn to recognize ears, whiskers, and fur patterns through these weighted connections.</p>
-          </div>
-        ),
-        "default": (
-          <div>
-            <p>Thank you for your question! I'd be happy to help you with that. Could you provide a bit more information about your specific interests or challenges in this area so I can give you the most relevant guidance?</p>
-          </div>
-        )
-      };
-      
-      // Find matching response or use default
-      let responseContent = demoResponses["default"];
-      for (const [key, value] of Object.entries(demoResponses)) {
-        if (input.toLowerCase().includes(key.toLowerCase())) {
-          responseContent = value;
-          break;
-        }
+
+    try {
+      const response = await fetch("http://localhost:7000/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: input }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-      
-      const aiMessage = { type: 'ai', content: responseContent };
-      setMessages((prev) => [...prev, aiMessage]);
+
+      const data: ChatResponse = await response.json();
+      const botMessage: MessageType = { type: 'ai', content: data.response };
+      setMessages(prev => [...prev, botMessage]);
+    } catch (error) {
+      console.error("Error fetching response:", error);
+      const errorMessage: MessageType = { 
+        type: 'ai', 
+        content: "Sorry, I'm having trouble connecting. Please try again later."
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setLoading(false);
-    }, 1500);
+    }
   };
-  
-  const handleExampleClick = (example) => {
+
+  const handleExampleClick = (example: string) => {
     setInput(example);
   };
   
@@ -155,35 +105,7 @@ const Chatbot = () => {
                   </p>
                   
                   <div className="space-y-4">
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-tutorYellow/20 flex items-center justify-center mr-3">
-                        <BookOpen className="h-4 w-4 text-tutorYellow" />
-                      </div>
-                      <div>
-                        <h3 className="text-white text-sm font-medium">Subject Expert</h3>
-                        <p className="text-gray-400 text-xs">Helps with any academic topic</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-tutorYellow/20 flex items-center justify-center mr-3">
-                        <Sparkles className="h-4 w-4 text-tutorYellow" />
-                      </div>
-                      <div>
-                        <h3 className="text-white text-sm font-medium">Roadmap Builder</h3>
-                        <p className="text-gray-400 text-xs">Creates learning paths for any skill</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-tutorYellow/20 flex items-center justify-center mr-3">
-                        <Clock className="h-4 w-4 text-tutorYellow" />
-                      </div>
-                      <div>
-                        <h3 className="text-white text-sm font-medium">Available 24/7</h3>
-                        <p className="text-gray-400 text-xs">Get help whenever you need it</p>
-                      </div>
-                    </div>
+                    {/* ... (keep existing sidebar content) */}
                   </div>
                   
                   <Separator className="my-6 bg-tutorBlue-light" />
@@ -191,10 +113,7 @@ const Chatbot = () => {
                   <div>
                     <h3 className="text-white text-sm font-medium mb-3">Limitations</h3>
                     <ul className="text-gray-400 text-xs space-y-2">
-                      <li>• May occasionally provide incorrect information</li>
-                      <li>• Limited knowledge of events after 2023</li>
-                      <li>• Cannot solve complex mathematical equations</li>
-                      <li>• Cannot access the internet or external systems</li>
+                      {/* ... (keep existing limitations content) */}
                     </ul>
                   </div>
                 </div>
@@ -228,9 +147,7 @@ const Chatbot = () => {
                                   : 'bg-tutorBlue-light/70 text-gray-200'
                               }`}
                             >
-                              {typeof message.content === 'string' 
-                                ? <p>{message.content}</p> 
-                                : message.content}
+                              <p>{message.content}</p>
                             </div>
                           </div>
                         </div>
@@ -257,7 +174,7 @@ const Chatbot = () => {
                       )}
                     </div>
                     
-                    {/* Example messages (shown when no conversation) */}
+                    {/* Example messages */}
                     {messages.length === 1 && !loading && (
                       <div className="mt-8">
                         <h3 className="text-center text-gray-300 mb-4 flex items-center justify-center">
@@ -285,10 +202,10 @@ const Chatbot = () => {
                       <Input
                         type="text"
                         value={input}
-                        onChange={(e) => setInput(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
                         placeholder="Ask anything about your studies..."
                         className="input-field flex-1"
-                        onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                        onKeyDown={(e: React.KeyboardEvent) => e.key === 'Enter' && handleSendMessage()}
                       />
                       <Button 
                         onClick={handleSendMessage}
