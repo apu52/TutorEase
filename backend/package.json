@@ -4,7 +4,7 @@
   "main": "server.ts",
   "type": "commonjs",
   "scripts": {
-  "start": "nodemon server.ts"
+    "start": "nodemon server.ts"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "mongoose": "^8.13.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/node": "^22.13.14",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"

@@ -9,6 +9,8 @@ export interface ITeacher extends Document {
   rating?: number;
   preferredMode?: 'online' | 'offline';
   fees: number;
+  description?: string;
+  experience?: number;
 }
 
 const TeacherSchema: Schema<ITeacher> = new Schema({
