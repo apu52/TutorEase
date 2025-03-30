@@ -1,158 +1,3 @@
-// import React, { useState } from "react";
-// import axios from "axios";
-// import { Tutor } from "../types/Tutor";
-
-// const FindTutor: React.FC = () => {
-//   const [filters, setFilters] = useState({
-//     searchTerm: "",
-//     subject: "",
-//     locations: "",
-//     preferredMode: "",
-//     sort: "",
-//   });
-
-//   const [tutors, setTutors] = useState<Tutor[]>([]);
-//   const [loading, setLoading] = useState<boolean>(false);
-//   const [error, setError] = useState<string | null>(null);
-
-//   // Handle form changes
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-//     const { name, value } = e.target;
-//     setFilters({ ...filters, [name]: value });
-//   };
-
-//   // Fetch tutors based on filters
-//   const fetchTutors = async () => {
-//     setLoading(true);
-//     setError(null);
-
-//     const { searchTerm, locations, preferredMode, sort } = filters;
-//     let url = `http://localhost:7000/api/students/tutor?`;
-
-//     // Add query params dynamically
-//     if (searchTerm) url += `searchTerm=${searchTerm}&`;
-//     if (locations) url += `locations=${locations}&`;
-//     if (preferredMode) url += `preferredMode=${preferredMode}&`;
-//     if (sort) url += `sort=${sort}&`;
-
-//     // Remove trailing "&"
-//     url = url.replace(/&$/, "");
-
-//     try {
-//       const response = await axios.get<{ tutors: Tutor[] }>(url);
-//       setTutors(response.data.tutors);
-//     } catch (err) {
-//       setError("Error fetching tutors. Please try again.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // Handle form submission
-//   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-//     fetchTutors();
-//   };
-
-//   return (
-//     <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-//       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">Find Your Tutor</h1>
-
-//       {/* Filter Form */}
-//       <form onSubmit={handleSubmit} className="mb-10 space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 sm:gap-4">
-//         <input
-//           type="text"
-//           name="searchTerm"
-//           placeholder="Search by name or subject"
-//           value={filters.searchTerm}
-//           onChange={handleChange}
-//           className="w-full px-4 py-2 border text-black border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-//         />
-//         <input
-//           type="text"
-//           name="locations"
-//           placeholder="Enter locations (e.g., Kolkata, Delhi)"
-//           value={filters.locations}
-//           onChange={handleChange}
-//           className="w-full px-4 py-2 border text-black border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-//         />
-//         <select
-//           name="preferredMode"
-//           value={filters.preferredMode}
-//           onChange={handleChange}
-//           className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-//         >
-//           <option value="">Select Mode</option>
-//           <option value="online">Online</option>
-//           <option value="offline">Offline</option>
-//         </select>
-//         <select
-//           name="sort"
-//           value={filters.sort}
-//           onChange={handleChange}
-//           className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-//         >
-//           <option value="">Sort by</option>
-//           <option value="rating">Rating</option>
-//           <option value="fees: low to high">Fees: Low to High</option>
-//           <option value="fees: high to low">Fees: High to Low</option>
-//           <option value="experience">Experience</option>
-//         </select>
-//         <button 
-//           type="submit" 
-//           className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md shadow-sm transition duration-150 ease-in-out"
-//         >
-//           Search
-//         </button>
-//       </form>
-
-//       {/* Loading and Error States */}
-//       {loading && <p className="text-center text-gray-600 py-4">Loading tutors...</p>}
-//       {error && <p className="text-center text-red-600 py-4">{error}</p>}
-
-//       {/* Display Tutors */}
-//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-//         {tutors.map((tutor) => (
-//           <div key={tutor._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-//             <div className="p-6">
-//               <h2 className="text-xl font-bold text-gray-800 mb-2">{tutor.name}</h2>
-//               <div className="space-y-2 text-gray-600">
-//                 <p>
-//                   <span className="font-medium text-gray-700">Subject:</span> {tutor.subject}
-//                 </p>
-//                 <p>
-//                   <span className="font-medium text-gray-700">Location:</span> {tutor.location}
-//                 </p>
-//                 <p>
-//                   <span className="font-medium text-gray-700">Mode:</span> {tutor.preferredMode}
-//                 </p>
-//                 <p>
-//                   <span className="font-medium text-gray-700">Fees:</span> ₹{tutor.fees}
-//                 </p>
-//                 <p>
-//                   <span className="font-medium text-gray-700">Experience:</span> {tutor.experience || 0} years
-//                 </p>
-//                 <p>
-//                   <span className="font-medium text-gray-700">Rating:</span>{" "}
-//                   <span className="text-yellow-500">⭐</span> {tutor.rating || 0}/5
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-      
-//       {/* No Results Message */}
-//       {!loading && tutors.length === 0 && !error && (
-//         <p className="text-center text-gray-600 py-8">No tutors found. Try adjusting your search filters.</p>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default FindTutor;
-
-
 import React, { useState } from "react";
 import axios from "axios";
 import { Tutor } from "../types/Tutor";
@@ -185,11 +30,10 @@ const FindTutor: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Mock data for filter options
-  const subjects = ["Mathematics", "Physics", "Chemistry", "Biology", 
-    "Computer Science", "English", "Hindi", "Sanskrit", 
-    "History", "Geography", "Economics", "Business Studies"];
+  const subjects = ["Economics", "Computer Science", "Machine Learning", "Python", 
+    "Physics"];
   
-  const locations = ["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Jaipur", "Ahmedabad"];
+  const locations = ["Chennai", "Mumbai", "Bangalore", "Kolkata", "Delhi"];
 
   // Handle form changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -479,7 +323,7 @@ const FindTutor: React.FC = () => {
                         <div className="relative">
                           <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-tutorYellow/20">
                             <img 
-                              src={`/api/placeholder/96/96`} 
+                              src={`/src/icon.svg`} 
                               alt={tutor.name} 
                               className="w-full h-full object-cover"
                             />
