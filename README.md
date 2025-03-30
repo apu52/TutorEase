@@ -1,48 +1,121 @@
+# 📚 TutorEase - Your Personalized Learning Companion
 
-**Use your preferred IDE**
+🚀 **Empowering students with AI-driven learning paths, tutor recommendations, and personalized study assistance.**
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Hugging face live link : https://huggingface.co/spaces/suryanshupaul/Recommendation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+AI Recommended Course Code Repo : https://github.com/apu52/TutorEase_Course_Section
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🧐 Problem Statement
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Many students struggle to find the right courses and tutors due to lack of proper guidance and scattered learning resources. The process of selecting an appropriate tutor or course is often overwhelming, and existing platforms do not provide a comprehensive AI-driven personalized learning experience.
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 💡 Solution Approach
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+TutorEase aims to solve this problem by providing a **one-stop educational platform** with the following features:
+
+1. 🎯 **AI-Generated Roadmaps & Course Recommendations**
+   - Students input their field of interest & desired course level (Beginner, Intermediate, Expert).
+   - AI generates a structured learning roadmap.
+   - Course recommendations from multiple platforms at different levels.
+
+2. 🏫 **Private Tutor Search with Advanced Filters**
+   - Students can search for private tutors based on:
+     - Subject/Field of Interest
+     - Location
+     - Experience
+     - Rating
+     - Qualification
+   - Tutor profiles with complete details about tuition services.
+
+3. 🤖 **Personalized AI Chatbot for Study Assistance**
+   - Chatbot helps students with study plans, course & book recommendations.
+   - Provides article suggestions based on student interests.
+
+4. 🔐 **Student & Tutor Authentication System**
+   - Separate login & registration for students and tutors.
+   - Tutor profiles become searchable upon registration.
+
+5. 🎨 **Visually Appealing UI with Education Theme**
+   - Dark Blue & Yellow color scheme with engaging animations.
+   - High-quality educational illustrations & interactive elements.
+
+6. ⭐ **Top-Ranked Tutor Section**
+   - Highlights the most popular & highly-rated tutors on the platform.
+
+7. 🗺 **Google Maps Integration for Tutor Search**
+   - Students can find tutors near their location through an interactive map.
+
+8. 📌 **Essential Pages**
+   - About Us 🏫
+   - Testimonials 💬
+   - Contact Us 📞
+
+9. 🌍 **Multilingual Support (Including Indian Languages)**
+   - Supports multiple languages to cater to a diverse audience.
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend:
+- ⚡ **TypeScript**
+- ⚛️ **React**
+- 🎨 **Tailwind CSS**
+
+### Backend:
+- 🛠 **Node.js**
+
+### Database:
+- 🗄 **MongoDB**
+
+### API Integration:
+- 🔮 **Gemini API** (for AI-based recommendations & chatbot)
+
+### Machine Learning:
+- 🐍 **Python** (for AI-powered roadmap generation & tutor ranking system)
+
+---
+
+## 📌 How to Run the Project
+
+### 1️⃣ Clone the Repository
+```bash
+ git clone https://github.com/your-repo/TutorEase.git
+ cd TutorEase
 ```
 
-**Edit a file directly in GitHub**
+### 2️⃣ Install Dependencies
+```bash
+ npm install  # For frontend
+ cd backend && npm install  # For backend
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### 3️⃣ Start the Development Servers
+```bash
+ npm run dev  # Starts frontend
+ cd backend && npm start  # Starts backend
+```
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🎯 Future Enhancements
+- AI-driven personalized learning analytics 📊
+- Live 1:1 video tutoring feature 📹
+- Gamification elements for student motivation 🎮
+- Mobile app version 📱
 
-## What technologies are used for this project?
+---
 
-This project is built with .
+### 📢 **Contributions Welcome!**
+💡 Have an idea? Feel free to contribute and help improve TutorEase! Open a PR or suggest features in the issues section.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
+### 🔗 **Connect With Us**
+📧 Contact: support@tutorease.com
+
+🚀 Let's revolutionize learning together! 🌟
 
