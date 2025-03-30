@@ -1,6 +1,7 @@
 import express from 'express';
 import studentController from '../controllers/studentController';
 import teacherController from '../controllers/teacherController';
+import tutorController from '../controllers/tutorController';
 
 const router = express.Router();
 
@@ -18,5 +19,8 @@ router.get('/teacher/:id', teacherController.getTeacherById);
 router.put('/teacher/:id', teacherController.updateTeacher);
 router.delete('/teacher/:id', teacherController.deleteTeacher); // ✅ Fixed Delete Route
 router.get('/teacher/search', teacherController.getTeachersBySubjectAndLocation);
+
+/* 🚀 Tutor Routes */
+router.get('/tutor', tutorController.getAllTutors);
 
 export default router;

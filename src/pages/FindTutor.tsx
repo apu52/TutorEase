@@ -1,5 +1,7 @@
 
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -17,108 +19,140 @@ import {
 import { Separator } from '@/components/ui/separator';
 
 // Mock data for tutors
-const tutors = [
-  {
-    id: 1,
-    name: "Dr. Priya Sharma",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
-    rating: 4.9,
-    reviews: 124,
-    subjects: ["Mathematics", "Physics"],
-    location: "Delhi",
-    experience: "8 years",
-    price: "₹800/hr",
-    description: "Mathematics PhD with expertise in teaching calculus, algebra, and physics to high school and college students.",
-    availability: "Weekdays evenings, weekends",
-    verified: true
-  },
-  {
-    id: 2,
-    name: "Raj Malhotra",
-    image: "https://images.unsplash.com/photo-1480455624313-e29b44bbfde1?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
-    rating: 4.8,
-    reviews: 98,
-    subjects: ["Computer Science", "Web Development"],
-    location: "Mumbai",
-    experience: "6 years",
-    price: "₹950/hr",
-    description: "Full stack developer and CS graduate helping students master programming fundamentals and web technologies.",
-    availability: "Flexible schedule",
-    verified: true
-  },
-  {
-    id: 3,
-    name: "Anjali Desai",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80", 
-    rating: 5.0,
-    reviews: 87,
-    subjects: ["English Literature", "Creative Writing"],
-    location: "Bangalore",
-    experience: "10 years",
-    price: "₹750/hr",
-    description: "Published author and former university professor specializing in literature, writing skills, and language arts.",
-    availability: "Mornings and weekends",
-    verified: true
-  },
-  {
-    id: 4,
-    name: "Dr. Vikram Singh",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
-    rating: 4.7,
-    reviews: 156,
-    subjects: ["Chemistry", "Biology"],
-    location: "Hyderabad",
-    experience: "12 years",
-    price: "₹850/hr",
-    description: "Medical doctor with teaching experience helping students excel in chemistry, biology, and medical entrance exams.",
-    availability: "Weekday evenings",
-    verified: true
-  },
-  {
-    id: 5,
-    name: "Neha Gupta",
-    image: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
-    rating: 4.6,
-    reviews: 72,
-    subjects: ["Hindi", "Sanskrit", "Indian History"],
-    location: "Jaipur",
-    experience: "9 years",
-    price: "₹700/hr",
-    description: "Literature expert with a passion for teaching Indian languages and cultural history. Helps students connect with their roots.",
-    availability: "Afternoons and weekends",
-    verified: false
-  },
-  {
-    id: 6,
-    name: "Aryan Patel",
-    image: "https://images.unsplash.com/photo-1531891437562-4301cf35b7e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
-    rating: 4.5,
-    reviews: 64,
-    subjects: ["Economics", "Business Studies"],
-    location: "Ahmedabad",
-    experience: "7 years",
-    price: "₹780/hr",
-    description: "MBA graduate specializing in economics and business subjects. Helps students understand complex economic theories and business concepts.",
-    availability: "Weekdays only",
-    verified: true
-  }
-];
+// const tutors = [
+//   {
+//     id: 1,
+//     name: "Dr. Priya Sharma",
+//     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
+//     rating: 4.9,
+//     reviews: 124,
+//     subjects: ["Mathematics", "Physics"],
+//     location: "Delhi",
+//     experience: "8 years",
+//     price: "₹800/hr",
+//     description: "Mathematics PhD with expertise in teaching calculus, algebra, and physics to high school and college students.",
+//     availability: "Weekdays evenings, weekends",
+//     verified: true
+//   },
+//   {
+//     id: 2,
+//     name: "Raj Malhotra",
+//     image: "https://images.unsplash.com/photo-1480455624313-e29b44bbfde1?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
+//     rating: 4.8,
+//     reviews: 98,
+//     subjects: ["Computer Science", "Web Development"],
+//     location: "Mumbai",
+//     experience: "6 years",
+//     price: "₹950/hr",
+//     description: "Full stack developer and CS graduate helping students master programming fundamentals and web technologies.",
+//     availability: "Flexible schedule",
+//     verified: true
+//   },
+//   {
+//     id: 3,
+//     name: "Anjali Desai",
+//     image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80", 
+//     rating: 5.0,
+//     reviews: 87,
+//     subjects: ["English Literature", "Creative Writing"],
+//     location: "Bangalore",
+//     experience: "10 years",
+//     price: "₹750/hr",
+//     description: "Published author and former university professor specializing in literature, writing skills, and language arts.",
+//     availability: "Mornings and weekends",
+//     verified: true
+//   },
+//   {
+//     id: 4,
+//     name: "Dr. Vikram Singh",
+//     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
+//     rating: 4.7,
+//     reviews: 156,
+//     subjects: ["Chemistry", "Biology"],
+//     location: "Hyderabad",
+//     experience: "12 years",
+//     price: "₹850/hr",
+//     description: "Medical doctor with teaching experience helping students excel in chemistry, biology, and medical entrance exams.",
+//     availability: "Weekday evenings",
+//     verified: true
+//   },
+//   {
+//     id: 5,
+//     name: "Neha Gupta",
+//     image: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
+//     rating: 4.6,
+//     reviews: 72,
+//     subjects: ["Hindi", "Sanskrit", "Indian History"],
+//     location: "Jaipur",
+//     experience: "9 years",
+//     price: "₹700/hr",
+//     description: "Literature expert with a passion for teaching Indian languages and cultural history. Helps students connect with their roots.",
+//     availability: "Afternoons and weekends",
+//     verified: false
+//   },
+//   {
+//     id: 6,
+//     name: "Aryan Patel",
+//     image: "https://images.unsplash.com/photo-1531891437562-4301cf35b7e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
+//     rating: 4.5,
+//     reviews: 64,
+//     subjects: ["Economics", "Business Studies"],
+//     location: "Ahmedabad",
+//     experience: "7 years",
+//     price: "₹780/hr",
+//     description: "MBA graduate specializing in economics and business subjects. Helps students understand complex economic theories and business concepts.",
+//     availability: "Weekdays only",
+//     verified: true
+//   }
+// ];
 
-const subjects = [
-  "Mathematics", "Physics", "Chemistry", "Biology", 
-  "Computer Science", "English", "Hindi", "Sanskrit", 
-  "History", "Geography", "Economics", "Business Studies"
-];
+// const subjects = [
+//   "Mathematics", "Physics", "Chemistry", "Biology", 
+//   "Computer Science", "English", "Hindi", "Sanskrit", 
+//   "History", "Geography", "Economics", "Business Studies"
+// ];
 
-const locations = ["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Jaipur", "Ahmedabad"];
+ const locations = ["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Jaipur", "Ahmedabad"];
 
 const FindTutor = () => {
+  const [loading, setLoading] = useState(false);
+  const [tutors, setTutors] = useState([]);
+  const [error, setError] = useState(null);
+  const [subjects, setSubjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [priceRange, setPriceRange] = useState([500, 1000]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [onlyVerified, setOnlyVerified] = useState(false);
   const [sortOption, setSortOption] = useState('relevance');
+
+  const fetchTutors = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get('http://localhost:7000/api/students/tutor', {
+        params: {
+          searchTerm,
+          priceMin: priceRange[0],
+          priceMax: priceRange[1],
+          subjects: selectedSubjects.join(','),
+          locations: selectedLocations.join(','),
+          verified: onlyVerified,
+          sort: sortOption,
+        },
+      });
+      setTutors(response.data.tutors);
+    } catch (err) {
+      setError('Error fetching tutors. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch tutors on initial load and when filters change
+  useEffect(() => {
+    fetchTutors();
+  }, [searchTerm, priceRange, selectedSubjects, selectedLocations, onlyVerified, sortOption]);
+
   
   return (
     <>
@@ -235,7 +269,7 @@ const FindTutor = () => {
                       id="verified-only" 
                       className="text-tutorYellow border-gray-500"
                       checked={onlyVerified}
-                      onCheckedChange={setOnlyVerified}
+                      onCheckedChange={(checked) => setOnlyVerified(checked === true)}
                     />
                     <label htmlFor="verified-only" className="text-sm text-gray-300 ml-2">
                       Verified tutors only
@@ -359,3 +393,4 @@ const FindTutor = () => {
 };
 
 export default FindTutor;
+
