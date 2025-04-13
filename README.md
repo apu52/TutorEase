@@ -1,5 +1,8 @@
 # 📚 TutorEase - Your Personalized Learning Companion
 
+![image](https://github.com/user-attachments/assets/e28cdc7a-1400-4ca5-a923-d976d3edd98f)
+
+
 🚀 **Empowering students with AI-driven learning paths, tutor recommendations, and personalized study assistance.**
 
 Hugging face live link : https://huggingface.co/spaces/suryanshupaul/Recommendation
